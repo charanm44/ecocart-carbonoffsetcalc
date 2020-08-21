@@ -6,6 +6,7 @@ $option-fill: #f2f2f2;
 $option-outline-selected: #009249;
 $option-fill-selected: #e2f0d9;
 $option-aside: #595959;
+$back-button-color: #BFBFBF;
 
 $question-image-height: 10rem;
 $options-border: 3px solid $option-outline;
@@ -160,5 +161,16 @@ $option-fill-stats: #eeeeee;
             @extend .nudge-right;
             margin: 0 auto;
         }
+    }
+
+    .back-button {
+        background-color: $back-button-color;
+        border: none;
+    }
+
+    .summary-tagline {
+        @extend .subheader;
+        @extend .nudge-down;
+        // font-weight: unset;
     }
 }

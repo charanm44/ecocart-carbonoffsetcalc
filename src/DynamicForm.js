@@ -229,14 +229,14 @@ export class DynamicForm extends Component {
                                 <div>homes powered</div>
                             </div>
                         </div>
-                        <div className={'subheader-l nudge-down'}>
+                        <div className={'summary-tagline'}>
                             Join the fight against Climate Change by offsetting your carbon footprint
                             <OverlayTrigger
                                 key={'top'}
                                 placement={'top'}
                                 overlay={
                                     <Tooltip id={`tooltip-${'top'}`}>
-                                        Offset your carbon footprint by heping protect the <span className={'boldface-link'}>Tri-City Forest</span>.
+                                        Offset your carbon footprint by heping protect the <span className={'boldface-link'}>Tri-City Forest</span>
                                     </Tooltip>
                                 }
                             >
@@ -271,7 +271,7 @@ export class DynamicForm extends Component {
                     <Row className={'nudge-down-l'}>
                         <Col className={'text-left'}>
                             {path.length > 1 &&
-                                <Button className={'action-button'} onClick={this.prevQuestionHandler} variant="success">
+                                <Button className={'action-button back-button'} onClick={this.prevQuestionHandler} variant="success">
                                     <FontAwesomeIcon className={'nudge-left-l'} icon={faLongArrowAltLeft} />
                                     BACK
                                 </Button>
