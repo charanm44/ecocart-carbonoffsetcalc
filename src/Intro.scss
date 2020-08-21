@@ -1,0 +1,23 @@
+@import "./comms.scss";
+
+$green: #009249;
+
+.intro {
+    .header {
+        @extend .header;
+        color: #009249;
+    }
+
+    .subheader {
+        @extend .subheader;
+        color: grey;
+    }
+
+    .button-start {
+        margin-top: $displacement-l;
+    }
+
+    .btn-success {
+        padding: $displacement $displacement-l;
+    }
+}
