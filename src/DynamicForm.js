@@ -106,6 +106,9 @@ export class DynamicForm extends Component {
             }
         }
         )
+        document.addEventListener("keydown", (event) => {
+            if (event.keyCode == 13 && this.state.currAnswer.length != 0) this.nextQuestionHandler()
+        })
     }
 
     checkAnswer = (answerIndex, answer) => {
@@ -249,7 +252,7 @@ export class DynamicForm extends Component {
                 <div className={'nudge-down-l'}>
                     {options.length != 1
                         ? Object.keys(options).map(answerIndex =>
-                            <Card key={`${path[path.length - 1]}${answerIndex}`} className={`nudge-down options ${currAnswer[answerIndex] != null ? "options-selected" : ''} ${isAtSummary ? "options-stats" : ''}`} onClick={() => { this.checkAnswer(answerIndex, options[answerIndex].type == 'input' && currAnswer[answerIndex] == null ? '' : options[answerIndex].type == 'input' ? currAnswer[answerIndex] : options[answerIndex].value) }} body>
+                            <Card key={`${path[path.length - 1]}${answerIndex}`} className={`nudge-down options ${currAnswer[answerIndex] != null ? "options-selected" : ''} ${isAtSummary ? "options-stats" : ''}`} onClick={() => { this.checkAnswer(answerIndex, options[answerIndex].type == 'input' && currAnswer[answerIndex] == null ? '' : options[answerIndex].type == 'input' ? currAnswer[answerIndex] : options[answerIndex].value); if (!questionObj.multiple) this.nextQuestionHandler(); }} body>
                                 <Row>
                                     <Col>{options[answerIndex].value}</Col>
                                     <Col className={'text-right'}>
