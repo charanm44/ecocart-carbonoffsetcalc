@@ -233,10 +233,11 @@ export class DynamicForm extends Component {
                             Join the fight against Climate Change by offsetting your carbon footprint
                             <OverlayTrigger
                                 key={'top'}
+                                trigger="click"
                                 placement={'top'}
                                 overlay={
                                     <Tooltip id={`tooltip-${'top'}`}>
-                                        Offset your carbon footprint by heping protect the <span className={'boldface-link'}>Tri-City Forest</span>
+                                        Offset your carbon footprint by heping protect the <a className={'boldface-link'} href="#">Tri-City Forest</a>
                                     </Tooltip>
                                 }
                             >
