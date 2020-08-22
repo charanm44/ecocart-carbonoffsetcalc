@@ -8,6 +8,11 @@ $green: #009249;
         color: $green;
     }
 
+    .header {
+        @extend .header;
+        font-weight: $font-heavier;
+    }
+
     .subheader {
         @extend .subheader;
         color: grey;

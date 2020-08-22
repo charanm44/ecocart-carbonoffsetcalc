@@ -69,7 +69,7 @@ $option-fill-stats: #eeeeee;
         border: $options-border;
         background-color: $option-fill;
         font-size: $emphasis-font-size;
-        font-weight: $font-heavier;
+        font-weight: $font-heavy;
         user-select: none;
         cursor: pointer;
     }
@@ -83,6 +83,7 @@ $option-fill-stats: #eeeeee;
 
     .options-stats {
         background-color: $option-fill-stats;
+        font-weight: $font-heaviest;
     }
 
     .option-aside {

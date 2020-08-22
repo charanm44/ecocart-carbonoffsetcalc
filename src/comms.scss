@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 @import "~bootstrap/scss/bootstrap";
 
 $content-width: 42vw;
@@ -13,6 +13,7 @@ $emphasis-font-size: 1.5rem;
 $font-normal: 400;
 $font-heavy: 500;
 $font-heavier: 600;
+$font-heaviest: 700;
 $line-spacing: 1.2em;
 $icon-text-spacing: 0.5em;
 
@@ -57,7 +58,7 @@ body {
 
 .header {
     font-size: $header-font-size;
-    font-weight: $font-heavier;
+    font-weight: $font-heavy;
     line-height: $line-spacing;
 }
 
@@ -68,7 +69,7 @@ body {
 
 .subheader-l {
     font-size: $subheader-font-size;
-    font-weight: $font-heavier;
+    font-weight: $font-heavy;
 }
 
 .action-button {
