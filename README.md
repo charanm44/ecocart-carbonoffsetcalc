@@ -6,7 +6,7 @@
 - ~~Box shape and color are different (all white boxes)~~
 - ~~Thinner box outline~~
 - ~~Lighter gray box outline `#A6A6A6`~~
-- Changed from _“last week’s emissions”_ to _“last 3 months”_ - simply take month calc. and multiply by 3
+- ~~Changed from _“last week’s emissions”_ to _“last 3 months”_ - simply take month calc. and multiply by 3~~
 - Different emojis (uploaded to assets folder)
 - Last screen: The ? icon currently does not let you click into the link. It disappears before you can click it
 - ~~Really think we need to make the boxes rounded edges like Wren vs boxy~~

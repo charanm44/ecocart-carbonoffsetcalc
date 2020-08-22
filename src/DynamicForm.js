@@ -168,8 +168,8 @@ export class DynamicForm extends Component {
                 },
                 {
                     "type": "text",
-                    "value": '$' + (totalScore * 0.22 < 0.5 ? 0.5 : totalScore * 0.22).toFixed(2),
-                    "aside": "Offset my emissions last week"
+                    "value": '$' + (totalScore * 0.9 * 3).toFixed(2),
+                    "aside": "Offset my emissions last 3 months"
                 },
                 {
                     "type": "input",
