@@ -45,7 +45,8 @@ export class DynamicForm extends Component {
             if (thisAnswer == null || thisAnswerScore == null) continue
             if (typeof (thisAnswerScore) != 'string') score += thisAnswerScore
             else if (thisAnswerScore.includes('value')) score += eval(thisAnswerScore.replace('value', thisAnswer))
-            else if (thisAnswerScore.includes('selections')) score += eval(thisAnswerScore.replace('selections', `'${selectedAnswers[selectedAnswers.length - 1]}'.split(',')`))
+            else if (thisAnswerScore.includes('prevScore')) score += eval(thisAnswerScore.replace('prevScore', carbonScores[carbonScores.length - 1]))
+            else if (thisAnswerScore.includes('prevSelections')) score += eval(thisAnswerScore.replace('prevSelections', `'${selectedAnswers[selectedAnswers.length - 1]}'.split(',')`))
         }
         carbonScores.push(score)
         console.log('Score', carbonScores)
@@ -60,7 +61,7 @@ export class DynamicForm extends Component {
             const questionObject = CarbonData[path[path.length - 1]]
             var { condition } = questionObject
             if (condition != null) {
-                condition = condition.replace('selections', `'${selectedAnswers[selectedAnswers.length - 1]}'.split(',')`)
+                condition = condition.replace('prevSelections', `'${selectedAnswers[selectedAnswers.length - 1]}'.split(',')`)
                 console.log('Question\'s gating condition', condition)  // [revisit] remove
                 var result = eval(condition)
                 if (typeof (result) == 'boolean')

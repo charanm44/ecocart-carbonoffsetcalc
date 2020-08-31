@@ -29,7 +29,7 @@ export const CarbonData = [
         "next": "1"
     },
     {
-        "condition": "selections[0] == 'Car'",
+        "condition": "prevSelections[0] == 'Car'",
         "question": "Is your car electric?",
         "icon": "car",
         "multiple": false,
@@ -90,7 +90,7 @@ export const CarbonData = [
         ]
     },
     {
-        "condition": "parseInt(selections[0]) > 0",
+        "condition": "parseInt(prevSelections[0]) > 0",
         "question": "Alright, how far do you usually fly?",
         "icon": "airplane",
         "multiple": false,
@@ -99,19 +99,19 @@ export const CarbonData = [
                 "type": "text",
                 "value": "Across the world",
                 "aside": "2500+ miles",
-                "score": "parseInt(selections[0])*1.6"
+                "score": "parseInt(prevSelections[0])*1.6"
             },
             {
                 "type": "text",
                 "value": "Across the country",
                 "aside": "1000-2500 miles",
-                "score": "parseInt(selections[0])*0.8"
+                "score": "parseInt(prevSelections[0])*0.8"
             },
             {
                 "type": "text",
                 "value": "Not far",
                 "aside": "Less than 1000 miles",
-                "score": "parseInt(selections[0])*0.3"
+                "score": "parseInt(prevSelections[0])*0.3"
             }
         ]
     }
