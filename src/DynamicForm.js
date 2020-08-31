@@ -35,6 +35,8 @@ export class DynamicForm extends Component {
     nextQuestionHandler = () => {
         var { selectedAnswers, carbonScores, options, currAnswer, path } = this.state
 
+        console.log('nextQuestionHandler / currAnswer:', currAnswer);
+
         // computing score for this question
         var score = 0
         for (var i = 0; i < currAnswer.length; i++) {
@@ -111,10 +113,9 @@ export class DynamicForm extends Component {
         })
     }
 
-    checkAnswer = (answerIndex, answer) => {
+    checkAnswer = (answerIndex, answer, callback) => {
         var { currAnswer, options, path } = this.state
         var multiple = path[path.length - 1] < CarbonData.length ? CarbonData[path[path.length - 1]].multiple : false
-        console.log('Curr answer', currAnswer)
         if (multiple) {
             if (answer == currAnswer[answerIndex]) currAnswer[answerIndex] = null
             else currAnswer[answerIndex] = answer
@@ -122,9 +123,12 @@ export class DynamicForm extends Component {
             currAnswer = Array.from(Array(options.length), () => null)
             currAnswer[answerIndex] = answer
         }
+        console.log('Curr answer', currAnswer)
         this.setState({
             currAnswer,
             disabled: currAnswer.toString().length == currAnswer.length - 1
+        }, () => {
+            callback();
         })
     }
 
@@ -252,12 +256,16 @@ export class DynamicForm extends Component {
                 <div className={'nudge-down-l'}>
                     {options.length != 1
                         ? Object.keys(options).map(answerIndex =>
-                            <Card key={`${path[path.length - 1]}${answerIndex}`} className={`nudge-down options ${currAnswer[answerIndex] != null ? "options-selected" : ''} ${isAtSummary ? "options-stats" : ''}`} onClick={() => { this.checkAnswer(answerIndex, options[answerIndex].type == 'input' && currAnswer[answerIndex] == null ? '' : options[answerIndex].type == 'input' ? currAnswer[answerIndex] : options[answerIndex].value); if (!questionObj.multiple) this.nextQuestionHandler(); }} body>
+                            <Card key={`${path[path.length - 1]}${answerIndex}`} className={`nudge-down options ${currAnswer[answerIndex] != null ? "options-selected" : ''} ${isAtSummary ? "options-stats" : ''}`} onClick={() => {
+                                this.checkAnswer(answerIndex, options[answerIndex].type == 'input' && currAnswer[answerIndex] == null ? '' : options[answerIndex].type == 'input' ? currAnswer[answerIndex] : options[answerIndex].value, () => {
+                                    if (options[answerIndex].type != 'input' && !questionObj.multiple) this.nextQuestionHandler();
+                                });
+                            }} body>
                                 <Row>
                                     <Col>{options[answerIndex].value}</Col>
                                     <Col className={'text-right'}>
                                         {options[answerIndex].type == 'input' && currAnswer[answerIndex] != null &&
-                                            <input onClick={(event) => event.stopPropagation()} onChange={(event) => this.checkAnswer(answerIndex, event.target.value)} type={'text'} className={'option-input'} value={currAnswer[answerIndex]}></input>
+                                            <input onClick={(event) => event.stopPropagation()} onChange={(event) => this.checkAnswer(answerIndex, event.target.value, () => { })} type={'text'} className={'option-input'} value={currAnswer[answerIndex]}></input>
                                         }
                                         <span className={'option-aside'}>{options[answerIndex].aside}</span>
                                     </Col>
@@ -265,7 +273,7 @@ export class DynamicForm extends Component {
                             </Card>
                         )
                         : <div>
-                            <input onChange={(event) => this.checkAnswer(0, event.target.value)} type={'text'} placeholder={options[0].value} className={'option-input-only'}></input>
+                            <input onChange={(event) => this.checkAnswer(0, event.target.value, () => { })} type={'text'} placeholder={options[0].value} className={'option-input-only'}></input>
                             <span className={'option-aside'}>{options[0].aside}</span>
                         </div>
                     }

@@ -12,6 +12,10 @@
 - ~~Really think we need to make the boxes rounded edges like Wren vs boxy~~
 - ~~You shouldn’t have to click next to advance. Once the _“accepted number of answers”_ is met, it should advance like Wrens’~~
 - ~~If not, then Next should be clicked when _enter_ is **hit**~~
+- ~~Score doesn't compute when NEXT is programmatically fired~~
+- ~~On single-option questions, firing NEXT automatically doesn't let user input~~
+- Adding questions
+- Encapsulate the whole thing in a rounded box
 
 ### Archived
 
