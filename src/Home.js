@@ -16,8 +16,8 @@ export class Home extends Component {
     }
 
     render() {
-
         return (
+        <div className={'homebox'}>
             <div className={'home'} style={this.state.isAtSummary ? { backgroundImage: 'none' } : {}}>
                 <div className={'home-content'}>
                     {
@@ -27,6 +27,7 @@ export class Home extends Component {
                     }
                 </div>
             </div >
+        </div>
         )
     }
 }

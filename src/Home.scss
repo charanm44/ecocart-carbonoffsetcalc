@@ -4,8 +4,21 @@ $background-brown-tinge: 0.2;
 $background-shade: #9e9e9eff;
 $summary-shade: #EBF7FB;
 
+.homebox{
+    margin-top: 50px;
+    // margin-right: 30px;
+    // margin-left: 30px;
+    margin-bottom: 50px;
+    border-radius: 25px;
+    border: 2px solid black;
+    width: 100%;
+    height: 100%;
+}
 .home {
     min-height: 100vh;
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
     background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
         url("./assets/images/loading.png");
     background-color: $summary-shade;
@@ -14,9 +27,8 @@ $summary-shade: #EBF7FB;
     background-clip: content-box;
     background-position: center;
     background-repeat: no-repeat;
-
     .home-content {
-        padding: $spacing;
+        // padding: $spacing;
         text-align: center;
         margin: 0 auto;
     }

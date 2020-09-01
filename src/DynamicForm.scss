@@ -42,6 +42,7 @@ $option-fill-stats: white;
         border-radius: $box-radius;
         position: absolute;
         left: $spacing;
+        // top: $spacing;
         width: $progress-container-width;
         .progress-text {
             margin-bottom: $icon-text-spacing/2;
