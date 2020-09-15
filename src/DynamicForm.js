@@ -13,6 +13,7 @@ import Button from 'react-bootstrap/Button'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import Modal from 'react-bootstrap/Modal'
 
 export class DynamicForm extends Component {
 
@@ -28,7 +29,9 @@ export class DynamicForm extends Component {
             currAnswer: [],
             options: [],
             disabled: true,
-            isAtSummary: false
+            isAtSummary: false,
+            checkoutModalShow: false,
+            payableAmount: 0,
         }
     }
 
@@ -45,7 +48,11 @@ export class DynamicForm extends Component {
             if (thisAnswer == null || thisAnswerScore == null) continue
             if (typeof (thisAnswerScore) != 'string') score += thisAnswerScore
             else if (thisAnswerScore.includes('value')) score += eval(thisAnswerScore.replace('value', thisAnswer))
-            else if (thisAnswerScore.includes('prevScore')) score += eval(thisAnswerScore.replace('prevScore', carbonScores[carbonScores.length - 1]))
+            else if (thisAnswerScore.includes('prevScore')) {
+                console.log('Hi')
+                score += eval(thisAnswerScore.replace('prevScore', carbonScores[carbonScores.length - 1]))
+                console.log('Hello')
+            }
             else if (thisAnswerScore.includes('prevSelections')) score += eval(thisAnswerScore.replace('prevSelections', `'${selectedAnswers[selectedAnswers.length - 1]}'.split(',')`))
         }
         carbonScores.push(score)
@@ -257,7 +264,9 @@ export class DynamicForm extends Component {
                 <div className={'nudge-down-l'}>
                     {options.length != 1
                         ? Object.keys(options).map(answerIndex =>
-                            <Card key={`${path[path.length - 1]}${answerIndex}`} className={`nudge-down options ${currAnswer[answerIndex] != null ? "options-selected" : ''} ${isAtSummary ? "options-stats" : ''}`} onClick={() => {
+                            <Card key={`${path[path.length - 1]}${answerIndex}`} className={`nudge-down options ${currAnswer[answerIndex] != null ? "options-selected" : ''} ${isAtSummary ? "options-stats" : ''}`}
+                            onClick={() => {
+                                if (this.state.isAtSummary) { this.setState({ payableAmount: options[answerIndex].value.substring(1), checkoutModalShow: true }); return; }
                                 this.checkAnswer(answerIndex, options[answerIndex].type == 'input' && currAnswer[answerIndex] == null ? '' : options[answerIndex].type == 'input' ? currAnswer[answerIndex] : options[answerIndex].value, () => {
                                     if (options[answerIndex].type != 'input' && !questionObj.multiple) this.nextQuestionHandler();
                                 });
@@ -293,13 +302,35 @@ export class DynamicForm extends Component {
                         <Col className={'text-right'}>
                             <Button className={'action-button'} disabled={this.state.disabled} onClick={this.nextQuestionHandler} variant="success">
                                 NEXT
-                            <FontAwesomeIcon className={'nudge-right-l'} icon={faLongArrowAltRight} />
+                                <FontAwesomeIcon className={'nudge-right-l'} icon={faLongArrowAltRight} />
                             </Button>
                         </Col>
                     </Row>
                 }
 
+                <Modal show={this.state.checkoutModalShow} onHide={() => this.setState({ checkoutModalShow: false })} size={'lg'} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Awesome! Would you like to confirm the payment?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Amount = <span class="subheader">${this.state.payableAmount}</span>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className={'action-button'} onClick={this.nextQuestionHandler} variant="success" onClick={() => this.setState({ checkoutModalShow: false })}>
+                            CONFIRM
+                            <FontAwesomeIcon className={'nudge-right-l'} icon={faLongArrowAltRight} />
+                        </Button>
+                        {/* <Button variant="secondary" onClick={() => this.setState({ checkoutModalShow: false })}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={() => this.setState({ checkoutModalShow: false })}>
+                            Save Changes
+                        </Button> */}
+                    </Modal.Footer>
+                </Modal>
+
             </div>
+
         )
     }
 }

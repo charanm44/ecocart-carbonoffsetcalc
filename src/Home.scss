@@ -2,7 +2,9 @@
 
 $background-brown-tinge: 0.2;
 $background-shade: #9e9e9eff;
-$summary-shade: #EBF7FB;
+$summary-shade: #ebf7fb;
+$checkout-overlay-shade: #000000a0;
+$checkout-content-rounded-edges: 5px;
 
 .home {
     min-height: 100vh;
@@ -19,5 +21,24 @@ $summary-shade: #EBF7FB;
         padding: $spacing;
         text-align: center;
         margin: 0 auto;
+    }
+
+    .checkout-overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $checkout-overlay-shade;
+        display: flex;
+
+        .checkout-container {
+            @extend .subheader;
+            padding: $spacing;
+            background-color: white;
+            border-radius: $checkout-content-rounded-edges;
+            margin: 0 auto;
+            align-self: center;
+        }
     }
 }
