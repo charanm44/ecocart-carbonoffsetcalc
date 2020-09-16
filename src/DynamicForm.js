@@ -35,7 +35,7 @@ export class DynamicForm extends Component {
             options: [],
             disabled: true,
             isAtSummary: false,
-            checkoutModalShow: true,
+            checkoutModalShow: false,
             payableAmount: 10,
             productName: "Test",
             clickedCheckoutConfirm: false,
