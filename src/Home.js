@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './Home.scss'
 
@@ -24,7 +24,7 @@ export class Home extends Component {
             <div className={'home'} style={this.state.isAtSummary ? { backgroundImage: 'none' } : {}}>
                 <div className={'home-content'}>
                     {
-                        <Router>
+                        <Router basename="/">
                             <Switch>
                                 <Route exact path="/" component={Intro} />
                                 <Route path="/form" component={DynamicForm} />

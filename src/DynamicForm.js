@@ -14,6 +14,11 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Modal from 'react-bootstrap/Modal'
+import Spinner from 'react-bootstrap/Spinner'
+
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
 
 export class DynamicForm extends Component {
 
@@ -30,8 +35,11 @@ export class DynamicForm extends Component {
             options: [],
             disabled: true,
             isAtSummary: false,
-            checkoutModalShow: false,
-            payableAmount: 0,
+            checkoutModalShow: true,
+            payableAmount: 10,
+            productName: "Test",
+            clickedCheckoutConfirm: false,
+            connectionError: false
         }
     }
 
@@ -157,7 +165,32 @@ export class DynamicForm extends Component {
             currAnswer: [],
             isAtSummary: true
         })
-        this.props.handleSubmit()
+        // this.props.handleSubmit()
+    }
+
+    overToStripe = async () => {
+        this.setState({ clickedCheckoutConfirm: true });
+        const stripe = await stripePromise;
+        const response = await fetch("http://localhost:4242/create-session", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productName: this.state.productName, payableAmount: this.state.payableAmount })
+        });
+        if (response.error) {
+            this.setState({ clickedCheckoutConfirm: false, connectionError: true });
+            return;
+        }
+        const session = await response.json();
+        // When the customer clicks on the button, redirect them to Checkout.
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.id,
+        });
+        if (result.error) {
+            // If `redirectToCheckout` fails due to a browser or network
+            // error, display the localized error message to your customer
+            // using `result.error.message`.
+            this.setState({ clickedCheckoutConfirm: false, connectionError: true })
+        }
     }
 
     render() {
@@ -265,12 +298,12 @@ export class DynamicForm extends Component {
                     {options.length != 1
                         ? Object.keys(options).map(answerIndex =>
                             <Card key={`${path[path.length - 1]}${answerIndex}`} className={`nudge-down options ${currAnswer[answerIndex] != null ? "options-selected" : ''} ${isAtSummary ? "options-stats" : ''}`}
-                            onClick={() => {
-                                if (this.state.isAtSummary) { this.setState({ payableAmount: options[answerIndex].value.substring(1), checkoutModalShow: true }); return; }
-                                this.checkAnswer(answerIndex, options[answerIndex].type == 'input' && currAnswer[answerIndex] == null ? '' : options[answerIndex].type == 'input' ? currAnswer[answerIndex] : options[answerIndex].value, () => {
-                                    if (options[answerIndex].type != 'input' && !questionObj.multiple) this.nextQuestionHandler();
-                                });
-                            }} body>
+                                onClick={() => {
+                                    if (this.state.isAtSummary) { this.setState({ payableAmount: options[answerIndex].value.substring(1), productName: options[answerIndex].aside, checkoutModalShow: true }); return; }
+                                    this.checkAnswer(answerIndex, options[answerIndex].type == 'input' && currAnswer[answerIndex] == null ? '' : options[answerIndex].type == 'input' ? currAnswer[answerIndex] : options[answerIndex].value, () => {
+                                        if (options[answerIndex].type != 'input' && !questionObj.multiple) this.nextQuestionHandler();
+                                    });
+                                }} body>
                                 <Row>
                                     <Col>{options[answerIndex].value}</Col>
                                     <Col className={'text-right'}>
@@ -310,15 +343,24 @@ export class DynamicForm extends Component {
 
                 <Modal show={this.state.checkoutModalShow} onHide={() => this.setState({ checkoutModalShow: false })} size={'lg'} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>Awesome! Would you like to confirm the payment?</Modal.Title>
+                        <Modal.Title>Awesome! Would you like to confirm payment?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Amount = <span class="subheader">${this.state.payableAmount}</span>
+                        <div>To: <span class="">{this.state.productName}</span></div>
+                        <div>Amount = <span class="subheader">${this.state.payableAmount}</span></div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button className={'action-button'} onClick={this.nextQuestionHandler} variant="success" onClick={() => this.setState({ checkoutModalShow: false })}>
+                        {this.state.connectionError &&
+                            <div class="error-text">Oops! That errored out. Please click again.</div>
+                        }
+                        <Button className={'action-button'} disabled={this.state.clickedCheckoutConfirm} variant="success" onClick={() => { this.overToStripe(); /*this.setState({ checkoutModalShow: false });*/ }}>
                             CONFIRM
-                            <FontAwesomeIcon className={'nudge-right-l'} icon={faLongArrowAltRight} />
+                            {!this.state.clickedCheckoutConfirm &&
+                                <FontAwesomeIcon className={'nudge-right-l'} icon={faLongArrowAltRight} />
+                            }
+                            {this.state.clickedCheckoutConfirm &&
+                                <Spinner className={'nudge-right'} animation="border" variant="light" />
+                            }
                         </Button>
                         {/* <Button variant="secondary" onClick={() => this.setState({ checkoutModalShow: false })}>
                             Close
